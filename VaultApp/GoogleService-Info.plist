@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>158460552801-9013v9povnje8ee45v9lfntlunt2kqrr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.158460552801-9013v9povnje8ee45v9lfntlunt2kqrr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB7t_e-ErlKM3qjVGRBLSRBg17pr-2Wwz8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>158460552801</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.VaultApp</string>
+	<key>PROJECT_ID</key>
+	<string>vaultapp-5c3c8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>vaultapp-5c3c8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:158460552801:ios:0a00bfd1e493c33fa0ac20</string>
+	<key>DATABASE_URL</key>
+	<string>https://vaultapp-5c3c8.firebaseio.com</string>
+</dict>
+</plist>
