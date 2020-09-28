@@ -15,7 +15,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     //MARK: Properties
      
     var albums = [Album]()
-    @IBOutlet weak var addAlbumButton: UIBarButtonItem!
     let encryptorDecryptorPin = EncryptorDecryptor(mode: "AlbumPin")
     let currentID = Auth.auth().currentUser?.uid
     
@@ -84,9 +83,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     // MARK: Actions
     @IBAction func addAlbumButtonClicked(_ sender: UIBarButtonItem) {
         askIfCreatAlbumWITHpin()
-        
-        
-        
     }
     
     // Ask if album should be created with PIN CODE
@@ -169,7 +165,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
                 
                 else{
                     // create album with password
-                    createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!, withPin: true)
+                    createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!, withPin: false)
                 }
                 
             }))
@@ -245,6 +241,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
         // STORAGE REF CHECK
         
         // Create a reference to the file you want to upload
+        print(currentID!)
         let child_path = "/users/"+currentID!+"/albums/all_album_details/"
         let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
 
@@ -360,7 +357,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         selectedAlbum = albums[indexPath.row]
-        
+        print("selectedAlbum.password", selectedAlbum.password)
         // NO PIN
         if selectedAlbum.password == " "{
             performSegue(withIdentifier: "ShowAlbum", sender: nil)
@@ -370,6 +367,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
             askForAlbumPin(encryptedPin: selectedAlbum.password)
         
         }}
+    
     
     func askForAlbumPin(encryptedPin: String){
         let alert = UIAlertController(title: "Enter 4 digit Pin", message: nil, preferredStyle: .alert)
@@ -448,7 +446,10 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
                 
                 albumCollectionViewController.album = selectedAlbum
                 
-                
+            case "showUserProfile1":
+                guard segue.destination is UserProfileViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+                }
             default:
                 fatalError("Unexpected Segue Identifier; \(segue.identifier)")
             

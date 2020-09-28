@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		015A9D90252205A500B4AE3E /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A9D8F252205A500B4AE3E /* UserProfileViewController.swift */; };
+		015A9D94252235E600B4AE3E /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A9D93252235E500B4AE3E /* extension.swift */; };
 		018819EA251CA6CC009755C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018819E9251CA6CC009755C9 /* AppDelegate.swift */; };
 		018819EC251CA6CC009755C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018819EB251CA6CC009755C9 /* SceneDelegate.swift */; };
 		018819EE251CA6CC009755C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018819ED251CA6CC009755C9 /* ViewController.swift */; };
@@ -41,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		015A9D8F252205A500B4AE3E /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		015A9D93252235E500B4AE3E /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		018819E6251CA6CC009755C9 /* VaultApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VaultApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		018819E9251CA6CC009755C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		018819EB251CA6CC009755C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 				01C176A2251F7DC20028405B /* PhotoDetailViewController.swift */,
 				01C176A4251FA3B90028405B /* Photo.swift */,
 				01C176AA2520B2870028405B /* EncryptorDecryptor.swift */,
+				015A9D8F252205A500B4AE3E /* UserProfileViewController.swift */,
+				015A9D93252235E500B4AE3E /* extension.swift */,
 			);
 			path = VaultApp;
 			sourceTree = "<group>";
@@ -213,7 +219,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Nashita Abd Guntaguli";
 				TargetAttributes = {
 					018819E5251CA6CC009755C9 = {
@@ -338,12 +344,14 @@
 				01C176A5251FA3B90028405B /* Photo.swift in Sources */,
 				01881A0C251CACA0009755C9 /* LoginViewController.swift in Sources */,
 				01C176A1251F61B50028405B /* PhotoCollectionViewCell.swift in Sources */,
+				015A9D94252235E600B4AE3E /* extension.swift in Sources */,
 				01C176AB2520B2870028405B /* EncryptorDecryptor.swift in Sources */,
 				018819EE251CA6CC009755C9 /* ViewController.swift in Sources */,
 				018819EA251CA6CC009755C9 /* AppDelegate.swift in Sources */,
 				01881A1D251F2C2D009755C9 /* AlbumCollectionViewController.swift in Sources */,
 				01C176A3251F7DC20028405B /* PhotoDetailViewController.swift in Sources */,
 				018819EC251CA6CC009755C9 /* SceneDelegate.swift in Sources */,
+				015A9D90252205A500B4AE3E /* UserProfileViewController.swift in Sources */,
 				01881A11251CC415009755C9 /* RegistrationViewController.swift in Sources */,
 				01881A15251D15C9009755C9 /* AlbumTableViewCell.swift in Sources */,
 				01881A17251DE9E3009755C9 /* AlbumTableViewController.swift in Sources */,
@@ -415,6 +423,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -475,6 +484,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

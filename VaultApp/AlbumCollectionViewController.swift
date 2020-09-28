@@ -43,7 +43,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
             navigationItem.title = album.name
         }
         
-        
+        downloadImageData()
         
 
     }
@@ -72,11 +72,38 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
     
     // MARK: - Actions
     
+    
     @IBAction func addImageButtonClicked(_ sender: UIBarButtonItem) {
         
         let photo_camera_alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let photoAction = UIAlertAction(title: "Photo Gallery", style: .default){ (_) in
+        let photoAction = UIAlertAction(title: "Photo Gallery", style: .default){ [self] (_) in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
+                let image = UIImagePickerController()
+                image.delegate = self
+                image.sourceType = .photoLibrary
+                image.allowsEditing = true
+                self.present(image, animated: true)
+                
+            }
+            
+        }
+            
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default){ [self] (_) in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = UIImagePickerController.SourceType.camera
+                imagePicker.allowsEditing = false
+                self.present(imagePicker, animated: true, completion: nil)
+                
+            }else{
+                print("Camera is Not Available")
+            }
+            
+        }
+        let albumCoverAction = UIAlertAction(title: "Add Album Cover Photo", style: .default){ (_) in
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
                 let image = UIImagePickerController()
                 image.delegate = self
@@ -86,20 +113,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
             }
             
         }
-            
         
-        let cameraAction = UIAlertAction(title: "Camera", style: .default){ (_) in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = UIImagePickerController.SourceType.camera
-                imagePicker.allowsEditing = false
-                self.present(imagePicker, animated: true, completion: nil)
-            }else{
-                print("Camera is Not Available")
-            }
-            
-        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){
             (_) in
             return
@@ -107,10 +121,12 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
         
         photo_camera_alert.addAction(photoAction)
         photo_camera_alert.addAction(cameraAction)
+        photo_camera_alert.addAction(albumCoverAction)
         photo_camera_alert.addAction(cancelAction)
         self.present(photo_camera_alert, animated: true, completion: nil)
         
     }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         

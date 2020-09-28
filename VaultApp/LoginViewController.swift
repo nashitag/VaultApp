@@ -15,6 +15,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
     // MARK: Properties
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var pwdTextField: UITextField!
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var registerButton: UIButton!
     
 
     override func viewDidLoad() {
@@ -26,6 +29,49 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         let key1 = (keys.encryptionKeyForAlbumPin)
         let key2 = (keys.encryptionKeyForPhotos)
         print("CHECKING KEYS", key1, key2)
+        
+        
+        
+        // EMAIL TEXT FIELD BORDER
+        let bottomLine = CALayer()
+        bottomLine.frame = CGRect(x: 0.0, y: emailTextField.frame.height - 1, width: emailTextField.frame.width, height: 1.0)
+        bottomLine.backgroundColor = UIColor.white.cgColor
+        emailTextField.borderStyle = UITextField.BorderStyle.none
+        emailTextField.layer.addSublayer(bottomLine)
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        emailTextField.textColor = UIColor.white
+        
+        
+        // PWD TEXT FIELD BORDER
+        let bottomLineP = CALayer()
+        bottomLineP.frame = CGRect(x: 0.0, y: pwdTextField.frame.height - 1, width: pwdTextField.frame.width, height: 1.0)
+        bottomLineP.backgroundColor = UIColor.white.cgColor
+        pwdTextField.borderStyle = UITextField.BorderStyle.none
+        pwdTextField.layer.addSublayer(bottomLineP)
+        pwdTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        pwdTextField.textColor = UIColor.white
+
+        
+        // SIGN IN BUTTON
+        signInButton.layer.shadowColor = UIColor.black.cgColor
+        signInButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        signInButton.layer.shadowRadius = 5
+        signInButton.layer.shadowOpacity = 0.5
+        signInButton.layer.cornerRadius = 2
+        
+        // SIGN IN BUTTON
+        forgotPasswordButton.layer.shadowColor = UIColor.black.cgColor
+        forgotPasswordButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        forgotPasswordButton.layer.shadowRadius = 5
+        forgotPasswordButton.layer.shadowOpacity = 0.5
+        forgotPasswordButton.layer.cornerRadius = 2
+        
+        // REGISTER IN BUTTON
+        registerButton.layer.shadowColor = UIColor.black.cgColor
+        registerButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        registerButton.layer.shadowRadius = 5
+        registerButton.layer.shadowOpacity = 0.5
+        registerButton.layer.cornerRadius = 2
     }
     
     // MARK: Actions
