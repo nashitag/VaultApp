@@ -58,14 +58,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         signInButton.layer.shadowRadius = 5
         signInButton.layer.shadowOpacity = 0.5
         signInButton.layer.cornerRadius = 2
-        
+
         // SIGN IN BUTTON
         forgotPasswordButton.layer.shadowColor = UIColor.black.cgColor
         forgotPasswordButton.layer.shadowOffset = CGSize(width: 5, height: 5)
         forgotPasswordButton.layer.shadowRadius = 5
         forgotPasswordButton.layer.shadowOpacity = 0.5
         forgotPasswordButton.layer.cornerRadius = 2
-        
+
         // REGISTER IN BUTTON
         registerButton.layer.shadowColor = UIColor.black.cgColor
         registerButton.layer.shadowOffset = CGSize(width: 5, height: 5)

@@ -10,13 +10,16 @@ import UIKit
 import Firebase
 import os.log
 
-class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
+
+
+class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     //MARK: Properties
      
     var albums = [Album]()
     let encryptorDecryptorPin = EncryptorDecryptor(mode: "AlbumPin")
     let currentID = Auth.auth().currentUser?.uid
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,16 +32,28 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
         updateAlbumsListServer()
         
         self.refreshControl?.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
-
+//        self.tableView.separatorInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
+        self.tableView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
+//        self.tableView.separatorStyle = .singleLine
         
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        // NAVIGATION BAR UI
+        let logo = UIImage(named: "banner1.jpg")
         
+        navigationController?.navigationBar.setBackgroundImage(logo, for: .default)
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50.0)
+        
+        
+//        tableView.layer.cornerRadius = 5
+//        tableView.layer.shadowColor = UIColor.black.cgColor
+//        tableView.layer.shadowRadius = 3
+//        tableView.layer.shadowOffset = CGSize(width: 20, height: 20)
     }
+    
+    
+    
+    
+    
     
     @objc func refresh(sender:AnyObject)
     {
@@ -69,12 +84,16 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AlbumTableViewCell  else {
             fatalError("The dequeued cell is not an instance of AlbumTableViewCell.")
         }
-
+        
+        
+//        cell.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
         // Configure the cell...
         // Fetches the appropriate meal for the data source layout.
         let album = albums[indexPath.row]
         cell.albumNameLabel.text = album.name
         cell.albumDateLabel.text = album.createdOn
+//        cell.imageView!.image = bckImages.randomElement() as? UIImage
+        
         return cell
     }
     
@@ -82,11 +101,47 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: Actions
     @IBAction func addAlbumButtonClicked(_ sender: UIBarButtonItem) {
+//        selectCoverPhoto()
         askIfCreatAlbumWITHpin()
     }
     
+//    func selectCoverPhoto(){
+//        let photo_camera_alert = UIAlertController(title: "Select Cover Photo for Album", message: nil, preferredStyle: .alert)
+//
+//        let photoAction = UIAlertAction(title: "Ok", style: .default){ [self] (_) in
+//            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
+//                let image = UIImagePickerController()
+//                image.delegate = self
+//                image.sourceType = .photoLibrary
+//                image.allowsEditing = true
+//                self.present(image, animated: true)
+//
+//            }
+//        }
+//        photo_camera_alert.addAction(photoAction)
+//        self.present(photo_camera_alert, animated: true, completion: nil)
+//
+//    }
+    
+//    var AlbumCoverPickedImage = UIImage(named: "defaultImage")
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//
+//        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+//        {
+//            AlbumCoverPickedImage = image
+//
+//
+//        } else{
+//            print("ERROR: Image was not imported")
+//        }
+//        self.dismiss(animated: true, completion: nil)
+//        askIfCreatAlbumWITHpin()
+//    }
+    
+    
     // Ask if album should be created with PIN CODE
     func askIfCreatAlbumWITHpin(){
+        
         let alert = UIAlertController(title: "Pin Code", message: "Would you like to create the album with a Pin Code?", preferredStyle: .alert)
         
         let actionYES = UIAlertAction(title: "Yes", style: .default, handler: { (action:UIAlertAction) in
@@ -197,6 +252,20 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
                 // store album
                 self.addAlbumToStorage(album: albumCreated!)
             }
+            
+//            // add album cover image
+//            let coverimagefileName = name+".jpg"
+//            guard let data: Data = AlbumCoverPickedImage!.jpegData(compressionQuality: 0.2) else {
+//                   return
+//               }
+//            let currentID = Auth.auth().currentUser?.uid
+//            let child_path = "/users/"+currentID!+"/albums/all_album_details/"+coverimagefileName
+//            let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
+//
+//            let metaData = StorageMetadata()
+//            metaData.contentType = "image/jpg"
+//
+//            storageRef.putData(data as Data, metadata: metaData)
         }
         
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelHandler))
@@ -253,6 +322,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
           }
           for item in result.items {
             // The items under storageReference.
+            
             item.getMetadata() { metadata, error in
               if let error = error {
                 // Uh-oh, an error occurred!
@@ -313,22 +383,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
             print("album deleted")
           }
         }
-        
-//
-//        let photos_path = "/users/"+currentID!+"/albums/"
-//        let photos_storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(photos_path)
-//
-//        photos_storageRef.listAll { (result, error) in
-//          if let error = error {
-//            // ...
-//            print("ERROR")
-//          }
-//          for item in result.items {
-//            print(item.name)
-////            item.delete(completion: nil)
-//            // The items under storageReference.
-//          }
-//        }
+
         
     }
     
@@ -348,6 +403,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
         return true
     }
     */
+    
 
     
     // MARK: - Navigation
