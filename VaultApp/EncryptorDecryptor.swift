@@ -39,6 +39,7 @@ class EncryptorDecryptor {
         }
     }
     
+    
     func decryptString(string: String) -> String {
         let data: Data = Data(base64Encoded: string)!
         return decrypt(data: data)
@@ -62,4 +63,5 @@ class EncryptorDecryptor {
             return "Decryption Failed"
         }
     }
+    
 }

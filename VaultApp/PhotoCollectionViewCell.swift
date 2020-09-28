@@ -15,7 +15,6 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     var photo: Photo! {
         didSet{
-//            print("here", photo.fileName)
             photoCellImageView.image = UIImage(data: photo.data!)
             
         }

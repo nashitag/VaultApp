@@ -17,6 +17,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     var albums = [Album]()
     @IBOutlet weak var addAlbumButton: UIBarButtonItem!
     let encryptorDecryptorPin = EncryptorDecryptor(mode: "AlbumPin")
+    let currentID = Auth.auth().currentUser?.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -222,7 +223,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     func addAlbumToStorage(album: Album){
         
         // STORAGE REF CHECK
-        let currentID = Auth.auth().currentUser?.uid
+        
                 
         // Create a reference to the file you want to upload
         let child_path = "/users/"+currentID!+"/albums/all_album_details/"+album.name
@@ -242,7 +243,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     func updateAlbumsListServer(){
         
         // STORAGE REF CHECK
-        let currentID = Auth.auth().currentUser?.uid
         
         // Create a reference to the file you want to upload
         let child_path = "/users/"+currentID!+"/albums/all_album_details/"
@@ -286,17 +286,56 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            albums.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            let selectedAlbumTODELETE = albums[indexPath.row]
+            deleteAlbumPathFirebase(selectedAlbumTODELETE: selectedAlbumTODELETE)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
+    func deleteAlbumPathFirebase(selectedAlbumTODELETE: Album){
+//        let child_path = "/users/"+currentID!+"/albums/"+selectedAlbumTODELETE.name
+        
+        let child_path = "/users/"+currentID!+"/albums/all_album_details/"+selectedAlbumTODELETE.name
+        let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
+        
+        storageRef.delete { error in
+          if let error = error {
+            // Uh-oh, an error occurred!
+            print("album deletion error", error)
+          } else {
+            // File deleted successfully
+            print("album deleted")
+          }
+        }
+        
+//
+//        let photos_path = "/users/"+currentID!+"/albums/"
+//        let photos_storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(photos_path)
+//
+//        photos_storageRef.listAll { (result, error) in
+//          if let error = error {
+//            // ...
+//            print("ERROR")
+//          }
+//          for item in result.items {
+//            print(item.name)
+////            item.delete(completion: nil)
+//            // The items under storageReference.
+//          }
+//        }
+        
+    }
+    
+    
 
     /*
     // Override to support rearranging the table view.
@@ -338,6 +377,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate {
         alert.addTextField{ (albumPin:UITextField) in
             albumPin.placeholder = "Album Pin Code"
             albumPin.keyboardType = UIKeyboardType.asciiCapableNumberPad
+            albumPin.isSecureTextEntry = true
             }
         
         let okAction = UIAlertAction(title: "Done", style: .default, handler: { (action:UIAlertAction) in

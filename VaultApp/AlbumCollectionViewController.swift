@@ -16,8 +16,8 @@ private let reuseIdentifier = "photoCell"
 
 
 
+
 class AlbumCollectionViewController: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate,  UICollectionViewDelegateFlowLayout {
-    
     
 
     // MARK: Properties
@@ -43,7 +43,8 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
             navigationItem.title = album.name
         }
         
-        downloadImageData()
+        
+        
 
     }
     
@@ -218,6 +219,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
                             }
                         }
                     }
+                    
                     
                 }
                 }
