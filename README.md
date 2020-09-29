@@ -1,7 +1,7 @@
 
-VaultApp iOS
+# VaultApp iOS
 
-Installation TO RUN:
+## Installation TO RUN:
 
 1. Clone or download Repository
 2. cd to project directory
