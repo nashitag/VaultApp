@@ -30,6 +30,7 @@
 		01C176A3251F7DC20028405B /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C176A2251F7DC20028405B /* PhotoDetailViewController.swift */; };
 		01C176A5251FA3B90028405B /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C176A4251FA3B90028405B /* Photo.swift */; };
 		01C176AB2520B2870028405B /* EncryptorDecryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C176AA2520B2870028405B /* EncryptorDecryptor.swift */; };
+		01F364222523B04D00B056B6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 01F364212523B04C00B056B6 /* README.md */; };
 		AF617F44FCA63465E0DB9979 /* Pods_VaultApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95966619590570DF04F920C /* Pods_VaultApp.framework */; };
 		C1635C259506EFE610025DFA /* Pods_VaultAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FFD6B10DABD729B4FEEAAB1 /* Pods_VaultAppTests.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		01C176A2251F7DC20028405B /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		01C176A4251FA3B90028405B /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		01C176AA2520B2870028405B /* EncryptorDecryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptorDecryptor.swift; sourceTree = "<group>"; };
+		01F364212523B04C00B056B6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		61CEB4FD96CC9C9B478AFCEE /* Pods-VaultAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VaultAppTests.release.xcconfig"; path = "Target Support Files/Pods-VaultAppTests/Pods-VaultAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		8F369327ACF3B4F600C9086C /* Pods-VaultApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VaultApp.debug.xcconfig"; path = "Target Support Files/Pods-VaultApp/Pods-VaultApp.debug.xcconfig"; sourceTree = "<group>"; };
 		8FFD6B10DABD729B4FEEAAB1 /* Pods_VaultAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VaultAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +104,7 @@
 		018819DD251CA6CC009755C9 = {
 			isa = PBXGroup;
 			children = (
+				01F364212523B04C00B056B6 /* README.md */,
 				018819E8251CA6CC009755C9 /* VaultApp */,
 				018819FF251CA6CF009755C9 /* VaultAppTests */,
 				018819E7251CA6CC009755C9 /* Products */,
@@ -263,6 +266,7 @@
 			files = (
 				018819F6251CA6CE009755C9 /* LaunchScreen.storyboard in Resources */,
 				01881A0E251CB0D6009755C9 /* GoogleService-Info.plist in Resources */,
+				01F364222523B04D00B056B6 /* README.md in Resources */,
 				018819F3251CA6CE009755C9 /* Assets.xcassets in Resources */,
 				018819F1251CA6CC009755C9 /* Main.storyboard in Resources */,
 			);
