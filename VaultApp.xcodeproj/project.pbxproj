@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		015A9D90252205A500B4AE3E /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A9D8F252205A500B4AE3E /* UserProfileViewController.swift */; };
-		015A9D94252235E600B4AE3E /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015A9D93252235E500B4AE3E /* extension.swift */; };
 		017B102825234B67006FE044 /* FileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017B102725234B67006FE044 /* FileTableViewController.swift */; };
 		017B102C25234BB9006FE044 /* FileClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017B102B25234BB9006FE044 /* FileClass.swift */; };
 		017B103025235057006FE044 /* FileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017B102F25235057006FE044 /* FileTableViewCell.swift */; };
@@ -47,7 +46,6 @@
 
 /* Begin PBXFileReference section */
 		015A9D8F252205A500B4AE3E /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
-		015A9D93252235E500B4AE3E /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
 		017B102725234B67006FE044 /* FileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewController.swift; sourceTree = "<group>"; };
 		017B102B25234BB9006FE044 /* FileClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileClass.swift; sourceTree = "<group>"; };
 		017B102F25235057006FE044 /* FileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableViewCell.swift; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				01C176A4251FA3B90028405B /* Photo.swift */,
 				01C176AA2520B2870028405B /* EncryptorDecryptor.swift */,
 				015A9D8F252205A500B4AE3E /* UserProfileViewController.swift */,
-				015A9D93252235E500B4AE3E /* extension.swift */,
 				017B102725234B67006FE044 /* FileTableViewController.swift */,
 				017B102B25234BB9006FE044 /* FileClass.swift */,
 				017B102F25235057006FE044 /* FileTableViewCell.swift */,
@@ -354,7 +351,6 @@
 				017B103025235057006FE044 /* FileTableViewCell.swift in Sources */,
 				01881A0C251CACA0009755C9 /* LoginViewController.swift in Sources */,
 				01C176A1251F61B50028405B /* PhotoCollectionViewCell.swift in Sources */,
-				015A9D94252235E600B4AE3E /* extension.swift in Sources */,
 				01C176AB2520B2870028405B /* EncryptorDecryptor.swift in Sources */,
 				018819EE251CA6CC009755C9 /* ViewController.swift in Sources */,
 				018819EA251CA6CC009755C9 /* AppDelegate.swift in Sources */,

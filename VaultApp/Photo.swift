@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Photo object
 class Photo {
     
     // MARK: Properties

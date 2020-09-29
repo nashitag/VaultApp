@@ -21,21 +21,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
     
     let encryptorDecryptor = EncryptorDecryptor(mode: "AlbumPhoto")
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        // Do any additional setup after loading the view.
-        let keys = VaultAppKeys()
-        let key1 = (keys.encryptionKeyForAlbumPin)
-        let key2 = (keys.encryptionKeyForPhotos)
-        print("CHECKING KEYS", key1, key2)
-        
-        
+        // dismiss keyboard if tap outside
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
 
         
-        
+        // UI DESIGN
         // EMAIL TEXT FIELD BORDER
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: emailTextField.frame.height - 1, width: emailTextField.frame.size.width, height: 1.0)
@@ -55,6 +49,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         pwdTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         pwdTextField.textColor = UIColor.white
 
+        //BUTTON BORDERS
         signInButton.layer.borderWidth = 0.5
         signInButton.layer.borderColor = UIColor.white.cgColor
         
@@ -67,6 +62,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
     }
     
     // MARK: Actions
+    
+    // LOG IN BUTTON CLICKED
     @IBAction func signInClicked(_ sender: UIButton) {
         
         let email = emailTextField.text!
@@ -74,45 +71,30 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         
         //check empty fields
         if(email.isEmpty || password.isEmpty){
-            print("All fields are required.")
-             displayAlertMessage(userMessage: "All fields are required.")
-            
-            //COMMENT OUT
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let controller = storyboard.instantiateViewController(withIdentifier: "MainGallery")
-//            controller.modalPresentationStyle = .fullScreen
-//            self.present(controller, animated: true, completion: nil)
-//
-            
+//            print("All fields are required.")
+            displayAlertMessage(userMessage: "All fields are required.")
         }
         else{
             Auth.auth().signIn(withEmail: email, password: password){ (user, error) in
-//                let err = error
-//                print(err)
+                // if authorised or user exists
                 if let user = Auth.auth().currentUser {
                     if !user.isEmailVerified{
                         // ask to verify
-                        print("ask to verify")
                         self.displayAlertEmailVerification(user: user, email: email)
                         
                     } else if error == nil {
-                        // verified, TO DO: Notify signing in
-                        print ("Email verified. Signing in...")
-                        
+                        // verified
                         // GO TO GALLERY
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let controller = storyboard.instantiateViewController(withIdentifier: "MainGallery")
                         controller.modalPresentationStyle = .fullScreen
                         self.present(controller, animated: true, completion: nil)
                     } else {
-                        
-                         print("wrong email or password")
-                        
-                        // CHECK IF USER IS ENTERING DECOY
                         self.displayAlertMessage(userMessage: "Log In Failed. Please enter your email or password correctly.")
-                        
                     }
-                }else{
+                }
+                // if wrong password, decoy or new user
+                else{
                     let err = error as NSError?
                     if(err?.userInfo["FIRAuthErrorUserInfoNameKey"] as! String=="ERROR_WRONG_PASSWORD"){
                         self.checkIfUserWantsDecoy(userEmail: email, pwdEntered: password)
@@ -126,30 +108,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         }
     }
     
+    // CHECK IF DECOY PASSWORD IS ENTERED
     func checkIfUserWantsDecoy(userEmail: String, pwdEntered: String) {
         
-        // store decoy Pwd
         let ref = Database.database().reference()
-        
-//        var decryptedDecoyPwd = ""
-        print(userEmail, pwdEntered)
-        
+
         var email = userEmail
         let toremove: Set<Character> = [".", "#", "$", "[", "]", "@"]
         email.removeAll(where: { toremove.contains($0) })
         
         
         ref.child("users").child(email).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
+            
             let value = snapshot.value as? NSDictionary
             let ifDecoy = value?["decoy"] as? String ?? ""
             if(ifDecoy=="yes"){
                 let decoyPwd = value?["decoyPwd"] as? String ?? ""
                 let decryptedDecoyPwd = self.encryptorDecryptor.decryptString(string: decoyPwd)
-                print("DECRYPTED PWD", decryptedDecoyPwd)
+//                print("DECRYPTED PWD", decryptedDecoyPwd)
                 if(decryptedDecoyPwd==pwdEntered){
-                    print("true, going to decoy gallery")
-                    
+                    // its a decoy, go to decoy gallery
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let controller = storyboard.instantiateViewController(withIdentifier: "DecoyGallery")
                     controller.modalPresentationStyle = .fullScreen
@@ -163,18 +141,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
           }) { (error) in
             print(error.localizedDescription)
         }
-        
-        
-        
     }
+    
+    // MARK: Helper functions
     
     func displayAlertMessage(userMessage: String){
         let myAlert = UIAlertController(title: "Error", message: userMessage, preferredStyle: UIAlertController.Style.alert);
-        
         let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil);
-        
         myAlert.addAction(okAction);
-        
         self.present(myAlert, animated:true, completion:nil);
     }
     
@@ -185,10 +159,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
             user.sendEmailVerification(completion: { (error) in
             })
         }
-        
         alert_verification.addAction(okAction)
         self.present(alert_verification, animated: true, completion: nil)
-        
     }
     
     @IBAction func forgotPwdButtonClicked(_ sender: Any) {

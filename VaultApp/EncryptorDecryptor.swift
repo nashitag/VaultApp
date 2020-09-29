@@ -10,6 +10,8 @@ import Foundation
 import Keys
 import RNCryptor
 
+
+// Class to encrypt/decrypt data or string using cocoa pod keys
 class EncryptorDecryptor {
     
     var mode: String!

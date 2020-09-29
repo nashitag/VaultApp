@@ -11,13 +11,10 @@ import Firebase
 
 class UserProfileViewController: UIViewController {
     
-    var ref: DatabaseReference!
-
-    var currentUser = Auth.auth().currentUser
-    
-    let encryptorDecryptor = EncryptorDecryptor(mode: "AlbumPhoto")
-    
     // MARK: Properties
+    var ref: DatabaseReference!
+    var currentUser = Auth.auth().currentUser
+    let encryptorDecryptor = EncryptorDecryptor(mode: "AlbumPhoto")
     let firebaseAuth = Auth.auth()
     @IBOutlet weak var usernameTextField: UILabel!
     
@@ -25,12 +22,12 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         usernameTextField.text = firebaseAuth.currentUser?.email
     }
     
 
     // MARK: Actions
+    
     @IBAction func decoyPasswordSetUp(_ sender: Any) {
         let alert = UIAlertController(title: "Decoy Password", message: "Enter decoy password.", preferredStyle: .alert)
         alert.addTextField{ (textfield:UITextField) in
@@ -60,27 +57,11 @@ class UserProfileViewController: UIViewController {
                 self.ref = Database.database().reference()
                 let childUpdates = ["decoyPwd": encryptedDecoyPwd, "decoy": "yes"]
                 self.ref.child("users").child(email).updateChildValues(childUpdates)
-//                self.ref.child("users").child(email).setValue()
-//                self.ref.child("users").child(email).setValue([])
-//                self.ref.child("users").child(currentUser!.email!).observeSingleEvent(of: .value, with: { (snapshot) in
-//                  // Get user value
-//                  let value = snapshot.value as? NSDictionary
-//                  let decoyPwd = value?["decoyPwd"] as? String ?? ""
-//                    let decryptedDecoyPwd = self.encryptorDecryptor.decryptString(string: decoyPwd)
-//                    print("DECRYPTED PWD", decryptedDecoyPwd)
-//                  }) { (error) in
-//                    print(error.localizedDescription)
-//                }
-                
             }
         }))
         self.present(alert, animated:true)
         
-        
-        
     }
-    
-    
     
     @IBAction func signOutButtonClicked(_ sender: Any) {
         do {

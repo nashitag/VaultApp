@@ -15,13 +15,14 @@ class AlbumTableViewCell: UITableViewCell {
     @IBOutlet weak var albumImage: UIImageView!
     @IBOutlet weak var albumDateLabel: UILabel!
     
-    var bckImages = [UIImage(named: "lck1"), UIImage(named: "lck2"), UIImage(named: "lck3"), UIImage(named: "lck4"), UIImage(named: "lck5"), UIImage(named: "lck6"), UIImage(named: "lck7"), UIImage(named: "lck8"), UIImage(named: "lck9")] //ADD MORE IMAGES
+    var bckImages = [UIImage(named: "lck1"), UIImage(named: "lck2"), UIImage(named: "lck3"), UIImage(named: "lck4"), UIImage(named: "lck5"), UIImage(named: "lck6"), UIImage(named: "lck7"), UIImage(named: "lck8"), UIImage(named: "lck9")]
 
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
+        // UI Design
         self.albumImage.layer.cornerRadius = 10.0;
         self.albumImage.layer.masksToBounds = true;
         self.albumImage.image = bckImages.randomElement() as? UIImage
@@ -36,19 +37,13 @@ class AlbumTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-//        //set the values for top,left,bottom,right margins
         
         let margins = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
         self.contentView.frame = self.contentView.frame.inset(by: margins)
         
-        
-//        self.contentView.layer.borderWidth = 0.5
-//        self.contentView.layer.borderColor = UIColor.black.cgColor
         self.contentView.layer.masksToBounds = true
         self.contentView.layer.cornerRadius = 10.0
         self.contentView.backgroundColor = .white
-        
-//        self.backgroundView = UIImageView(image: bckImages.randomElement() as? UIImage)
         
         self.contentView.layer.shadowColor = UIColor.black.cgColor
         self.contentView.layer.shadowOffset = CGSize(width: 0, height: -3.0)

@@ -13,51 +13,30 @@ import Firebase
 
 private let reuseIdentifier = "photoCell"
 
-
-
-
-
 class AlbumCollectionViewController: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate,  UICollectionViewDelegateFlowLayout {
     
 
     // MARK: Properties
     var album: Album?
-    
     var photos = [Photo]()
-    
     var selectedPhoto: Photo!
-    
     private let spacing:CGFloat = 4.0
-    
-
+    let currentID = Auth.auth().currentUser?.uid
     
     // MARK: UIViewController / Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
         if let album = album {
             navigationItem.title = album.name
         }
         
         downloadImageData()
         
-
     }
-    
-    // load when back from
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
-    
-    
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            
         
             let numberOfItemsPerRow:CGFloat = 3
             let spacingBetweenCells:CGFloat = 10
@@ -74,7 +53,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
     
     // MARK: - Actions
     
-    
+    // ADD IMAGE: PHOTO AND CAMERA
     @IBAction func addImageButtonClicked(_ sender: UIBarButtonItem) {
         
         let photo_camera_alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -88,10 +67,8 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
                 self.present(image, animated: true)
                 
             }
-            
         }
             
-        
         let cameraAction = UIAlertAction(title: "Camera", style: .default){ [self] (_) in
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
                 let imagePicker = UIImagePickerController()
@@ -103,9 +80,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
             }else{
                 print("Camera is Not Available")
             }
-            
         }
-        
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){
             (_) in
@@ -134,24 +109,18 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
     }
     
     
-    // BACKEND FUNCTIONS
+    // MARK: BACKEND FUNCTIONS
     
     func uploadImage(image: UIImage){
         
         let uuid = UUID().uuidString
-        
         guard let data: Data = image.jpegData(compressionQuality: 0.2) else {
                return
            }
         
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpg"
-//        metaData.customMetadata = ["fileName":uuid,  "addedOn":photo.]
         
-        
-        
-        // STORAGE REF CHECK
-        let currentID = Auth.auth().currentUser?.uid
         
         if let album = album {
             let child_path = "/users/"+currentID!+"/albums/"+album.name+"/"+uuid+".jpg"
@@ -176,22 +145,15 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
     
     
     func downloadImageData(){
-//        var newPhotos = [Data]()
-        print("downloadImageData")
         
-        let currentID = Auth.auth().currentUser?.uid
         if let album = album {
             let child_path = "/users/"+currentID!+"/albums/"+album.name+"/"
             
             let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
             
-            
-            
             storageRef.listAll { (result, error) in
                 if let error = error {
-                  // ...
-                  print(error)
-                  print("FETCHING IMAGES ERROR")
+                  print("FETCHING IMAGES ERROR:", error)
                 }
                 for item in result.items {
                   // The items under storageReference.
@@ -201,7 +163,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
                     
                     item.getMetadata(){ metadata, error in
                         if let error = error {
-                            
+                            print("Metadata ERROR:", error)
                         }else{
                             let date: Date = (metadata?.timeCreated)!
                             addedOn = self.getDate(date: date)
@@ -212,12 +174,10 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
                     
                     item.getData(maxSize: (1 * 1024 * 1024)){ (data, error) in
                         if let _error = error{
-                            print(error)
-                            print("GET IMAGE DATA ERROR")
+                            print("GET IMAGE DATA ERROR:", _error)
                         } else {
                             let photo = Photo(fileName: item.name, addedOn: addedOn, data: data, inAlbum: album.name)
                             
-//                            print(photo!.data)
                             DispatchQueue.main.async {
                                 if(!self.photos.contains(where: { $0.fileName == photo!.fileName })){
                                     self.photos.append(photo!)
@@ -228,9 +188,8 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
                         }
                     }
                     
-                    
                 }
-                }
+            }
             
         }}
     
@@ -268,18 +227,13 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
     
-//        let imageName =
         // Configure the cell
         cell.photo = photos[indexPath.item]
-//        cell.imageData = photosDataList[indexPath.item]
-    
         return cell
     }
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-       
         selectedPhoto = photos[indexPath.item]
         performSegue(withIdentifier: "ShowImageDetail", sender: nil)
     }

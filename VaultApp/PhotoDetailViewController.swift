@@ -15,16 +15,12 @@ class PhotoDetailViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     var image: UIImage!
-//    var scrollView: UIScrollView!
-    
     var photo: Photo!
-    
     @IBOutlet weak var addedOnLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         
         let displayImage = UIImage(data: photo.data!)
         imageView.image = displayImage
@@ -33,21 +29,13 @@ class PhotoDetailViewController: UIViewController, UIScrollViewDelegate {
         addedOnLabel.text = photo.addedOn
         print(photo.addedOn)
         
-//        scrollView.delegate = self
-//        scrollView.minimumZoomScale = 1.0
-//        scrollView.maximumZoomScale = 10.0//maximum zoom scale you want
-//        scrollView.zoomScale = 1.0
-        
-        
     }
     
-//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-//            return imageView
-//    }
     
 
     // MARK: - Actions
     
+    // DELETE PHOTO BUTTON
     @IBAction func deletePhotoButton(_ sender: UIBarButtonItem) {
         let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
@@ -63,28 +51,27 @@ class PhotoDetailViewController: UIViewController, UIScrollViewDelegate {
         optionMenu.addAction(cancelAction)
         
         self.present(optionMenu, animated: true, completion: nil)
-        
-        
     }
     
+    // DELETE PHOTO
     func deletePhoto(){
         let currentID = Auth.auth().currentUser?.uid
                         
-                // Create a reference to the file you want to upload
-                let child_path = "/users/"+currentID!+"/albums/"+photo.inAlbum+"/"+photo.fileName
-                
-                let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
-                
-                storageRef.delete { error in
-                  if let error = error {
-                    // Uh-oh, an error occurred!
-                    print("DELETE ERROR", error)
-                  } else {
-                    // File deleted successfully
-                    self.displaySuccessAlert()
-                    
-                  }
-                }
+        // Create a reference to the file you want to upload
+        let child_path = "/users/"+currentID!+"/albums/"+photo.inAlbum+"/"+photo.fileName
+        
+        let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
+        
+        storageRef.delete { error in
+          if let error = error {
+            // Uh-oh, an error occurred!
+            print("DELETE ERROR", error)
+          } else {
+            // File deleted successfully
+            self.displaySuccessAlert()
+            
+          }
+        }
     }
     
     func displaySuccessAlert(){

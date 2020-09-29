@@ -9,6 +9,7 @@ import UIKit
 import RNCryptor
 
 
+// Album object
 class Album {
     
     // MARK: Properties
@@ -22,23 +23,22 @@ class Album {
     
     //MARK: Initialization
      
-    //Failable initializers always start with either init? or init!. These initializers return optional values or implicitly unwrapped optional values, respectively. Optionals can either contain a valid value or nil. You must check to see if the optional has a value, and then safely unwrap the value before you can use it. Implicitly unwrapped optionals are optionals, but the system implicitly unwraps them for you.
     init?(name: String, photo: UIImage? = nil, password: String, createdOn: String = "") {
         if name.isEmpty || password.isEmpty  {
             return nil
-        } //In this case, your initializer returns an optional Meal? object.
+        } 
         
         self.name = name
         self.photo = photo
         self.password = password
         
-        //created on param not passed
+        //created if param not passed
         if(createdOn==""){
             self.createdOn = getDate()
         }else{
             self.createdOn = createdOn
         }
-        
+    
     }
     
     func getDate() -> String{
@@ -48,9 +48,5 @@ class Album {
         let createdDate = dateFormatter.string(from: date)
         return createdDate
     }
-    
-    
-    
-    
     
 }

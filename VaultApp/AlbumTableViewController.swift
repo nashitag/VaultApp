@@ -147,7 +147,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                 else{
                     // create album with password
                     self.createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!,  pin: albumPwdText.text!, withPin: true)
-                    
                 }
             }))
         }else{
@@ -215,9 +214,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
     // MARK: BACKEND FUNCTIONS
     func addAlbumToStorage(album: Album){
         
-        // STORAGE REF CHECK
-        
-                
         // Create a reference to the file you want to upload
         let child_path = "/users/"+currentID!+"/albums/all_album_details/"+album.name
         let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
@@ -233,27 +229,25 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
         
     }
     
+    // update table list of albums
     func updateAlbumsListServer(){
         
-        // STORAGE REF CHECK
-        
         // Create a reference to the file you want to upload
-        print(currentID!)
+//        print(currentID!)
         let child_path = "/users/"+currentID!+"/albums/all_album_details/"
         let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
 
         
         storageRef.listAll { (result, error) in
           if let error = error {
-            // ...
-            print("ERROR")
+            print("ERROR fetching albums", error)
           }
           for item in result.items {
             // The items under storageReference.
             
             item.getMetadata() { metadata, error in
               if let error = error {
-                // Uh-oh, an error occurred!
+                print("ERROR fetching metadata", error)
               } else {
                 let albumMetadata = metadata?.customMetadata
                 let albumNew = Album(name: albumMetadata!["name"]!, password: albumMetadata!["password"]!, createdOn: albumMetadata!["createdOn"]!)
@@ -280,44 +274,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
         return true
     }
     */
-
-    
-    // Override to support editing the table view.
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            // Delete the row from the data source
-//            albums.remove(at: indexPath.row)
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//
-//            let selectedAlbumTODELETE = albums[indexPath.row]
-////            deleteAlbumPathFirebase(selectedAlbumTODELETE: selectedAlbumTODELETE)
-//        } else if editingStyle == .insert {
-//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//        }
-//    }
-    
-    
-    // CHECK FUNCTION TO DELETE
-//    func deleteAlbumPathFirebase(selectedAlbumTODELETE: Album){
-////        let child_path = "/users/"+currentID!+"/albums/"+selectedAlbumTODELETE.name
-//
-//        let child_path = "/users/"+currentID!+"/albums/all_album_details/"+selectedAlbumTODELETE.name
-//        let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
-//
-//        storageRef.delete { error in
-//          if let error = error {
-//            // Uh-oh, an error occurred!
-//            print("album deletion error", error)
-//          } else {
-//            // File deleted successfully
-//            print("album deleted")
-//          }
-//        }
-//        albums.removeAll()
-//        updateAlbumsListServer()
-//
-//
-//    }
     
     
 
@@ -356,7 +312,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
         
         }}
     
-    
+    // ASK FOR ALBUM PIN BEFORE OPENING ALBUM
     func askForAlbumPin(encryptedPin: String){
         let alert = UIAlertController(title: "Enter 4 digit Pin", message: nil, preferredStyle: .alert)
 
@@ -397,18 +353,17 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
         self.present(alert, animated: true, completion: nil)
     }
     
+    // DECRYPT ALBUM PIN
     func decryptPin(encryptedPin: String, userPin: String) -> Bool{
         
         let decryptedPin = encryptorDecryptorPin.decryptString(string: encryptedPin)
         
-        print(userPin, decryptedPin)
+//        print(userPin, decryptedPin)
         if(userPin==decryptedPin){
             return true
         }else{
             return false
         }
-        
-        
     }
     
 
@@ -423,15 +378,6 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
                 
-//                guard let selectedAlbumCell = sender as? AlbumTableViewCell else {
-//                    fatalError("Unexpected sender: \(sender)")
-//                }
-                
-//                guard let indexPath = tableView.indexPath(for: selectedAlbumCell) else {
-//                    fatalError("The selected cell is not being displayed by the table")
-//                }
-                
-                
                 albumCollectionViewController.album = selectedAlbum
                 
             case "showUserProfile1":
@@ -439,7 +385,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                     fatalError("Unexpected destination: \(segue.destination)")
                 }
             default:
-                fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+                fatalError("Unexpected Segue Identifier; \(segue.identifier ?? "ERROR")")
             
             
         }

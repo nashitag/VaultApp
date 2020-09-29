@@ -26,9 +26,10 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         pwdTextField.delegate = self
         confirmPwdTextField.delegate = self
         
+        // dismiss keyboard if tap outside
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
 
-        
+        // UI DESIGN
         // EMAIL TEXT FIELD BORDER
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: emailTextField.frame.size.height, width: emailTextField.frame.size.width, height: 1.0)
@@ -37,7 +38,6 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         emailTextField.layer.addSublayer(bottomLine)
         emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         emailTextField.textColor = UIColor.white
-        
         
         // PWD TEXT FIELD BORDER
         let bottomLine2 = CALayer()
@@ -57,16 +57,18 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         confirmPwdTextField.attributedPlaceholder = NSAttributedString(string: "Confirm Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         confirmPwdTextField.textColor = UIColor.white
         
+        // BUTTON BORDERS
         signUpButton.layer.borderWidth = 0.5
         signUpButton.layer.borderColor = UIColor.white.cgColor
         
         alrRegisteredButton.layer.borderWidth = 0.5
         alrRegisteredButton.layer.borderColor = UIColor.white.cgColor
         
-        
     }
     
     // MARK: - Actions
+    
+    // SIGN UP BUTTON CLICKED
     @IBAction func signUpClicked(_ sender: UIButton) {
         
         let userEmail = emailTextField.text!;
@@ -86,7 +88,7 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
             return; //we do not want user to continue
         }
         
-        // check is pwd is at least 6 characters
+        // check if pwd is at least 6 characters
         if(userPwd.count<6){
             displayAlertMessage(title: "Error", userMessage: "Passwords should be at least 6 characters.");
             return; //we do not want user to continue
@@ -94,17 +96,16 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         
         // create user and store data
         Auth.auth().createUser(withEmail: userEmail, password: userPwd) { (user, error) in
-//            let err = error
-//            print(err)
+
             if error != nil{
                 // user exists
-                print("Email has been used, try a different one")
+//                print("Email has been used, try a different one")
                 self.displayAlertMessage(title: "Error", userMessage: "User exists.Please use another email or sign in.")
             }else{
                 self.createDatabaseRef(userEmail: userEmail)
                 Auth.auth().currentUser!.sendEmailVerification(completion: { (error) in})
                 
-                // Display Alert Message with Confirmation, similar alert, but we need to implement the handler
+                // go back to login
                 self.displayAlertMessage(title: "Account Created", userMessage: "Please verify your email by confirming the sent link.", handler: self.goBackToLogIn)
                 print("User created")
                 
@@ -112,6 +113,7 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         }
     }
     
+    // create database reference with user email id
     func createDatabaseRef(userEmail: String){
         // store decoy Pwd
         var email = userEmail
@@ -119,9 +121,9 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         email.removeAll(where: { toremove.contains($0) })
         let ref = Database.database().reference()
         ref.child("users").child(email).setValue(["decoy": "no"])
-        
     }
     
+    // back to login
     func goBackToLogIn (action : UIAlertAction) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
@@ -131,22 +133,10 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
     
     func displayAlertMessage(title: String, userMessage: String, handler: ((UIAlertAction) -> Void)? = nil){
         let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertController.Style.alert);
-        
         let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: handler);
         myAlert.addAction(okAction);
-        
         self.present(myAlert, animated:true, completion:nil);
     }
-    
-    
-    // BACKEND FUNCTION - CREATE STORAGE Reference
-    func createStorage(){
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-        let imagesRef = storageRef.child("images")
-    }
-    
-    
 
     /*
     // MARK: - Navigation
