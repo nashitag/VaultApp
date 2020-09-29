@@ -26,10 +26,8 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         pwdTextField.delegate = self
         confirmPwdTextField.delegate = self
         
-        
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
 
-        
         
         // EMAIL TEXT FIELD BORDER
         let bottomLine = CALayer()
@@ -39,6 +37,7 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         emailTextField.layer.addSublayer(bottomLine)
         emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         emailTextField.textColor = UIColor.white
+        
         
         // PWD TEXT FIELD BORDER
         let bottomLine2 = CALayer()
