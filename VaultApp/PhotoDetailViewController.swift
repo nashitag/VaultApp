@@ -9,12 +9,13 @@
 import UIKit
 import Firebase
 
-class PhotoDetailViewController: UIViewController {
+class PhotoDetailViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: Properties
     
     @IBOutlet weak var imageView: UIImageView!
     var image: UIImage!
+//    var scrollView: UIScrollView!
     
     var photo: Photo!
     
@@ -32,7 +33,17 @@ class PhotoDetailViewController: UIViewController {
         addedOnLabel.text = photo.addedOn
         print(photo.addedOn)
         
+//        scrollView.delegate = self
+//        scrollView.minimumZoomScale = 1.0
+//        scrollView.maximumZoomScale = 10.0//maximum zoom scale you want
+//        scrollView.zoomScale = 1.0
+        
+        
     }
+    
+//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+//            return imageView
+//    }
     
 
     // MARK: - Actions

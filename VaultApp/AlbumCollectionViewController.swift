@@ -57,6 +57,8 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
     
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            
+        
             let numberOfItemsPerRow:CGFloat = 3
             let spacingBetweenCells:CGFloat = 10
             
@@ -103,16 +105,7 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
             }
             
         }
-        let albumCoverAction = UIAlertAction(title: "Add Album Cover Photo", style: .default){ (_) in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
-                let image = UIImagePickerController()
-                image.delegate = self
-                image.sourceType = .photoLibrary
-                image.allowsEditing = true
-                self.present(image, animated: true)
-            }
-            
-        }
+        
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel){
             (_) in
@@ -121,7 +114,6 @@ class AlbumCollectionViewController: UICollectionViewController, UINavigationCon
         
         photo_camera_alert.addAction(photoAction)
         photo_camera_alert.addAction(cameraAction)
-        photo_camera_alert.addAction(albumCoverAction)
         photo_camera_alert.addAction(cancelAction)
         self.present(photo_camera_alert, animated: true, completion: nil)
         

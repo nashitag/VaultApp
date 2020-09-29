@@ -15,6 +15,8 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var pwdTextField: UITextField!
     @IBOutlet weak var confirmPwdTextField: UITextField!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var alrRegisteredButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,48 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         emailTextField.delegate = self
         pwdTextField.delegate = self
         confirmPwdTextField.delegate = self
+        
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
+
+        
+        
+        // EMAIL TEXT FIELD BORDER
+        let bottomLine = CALayer()
+        bottomLine.frame = CGRect(x: 0.0, y: emailTextField.frame.size.height, width: emailTextField.frame.size.width, height: 1.0)
+        bottomLine.backgroundColor = UIColor.white.cgColor
+        emailTextField.borderStyle = UITextField.BorderStyle.none
+        emailTextField.layer.addSublayer(bottomLine)
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        emailTextField.textColor = UIColor.white
+        
+        // PWD TEXT FIELD BORDER
+        let bottomLine2 = CALayer()
+        bottomLine2.frame = CGRect(x: 0.0, y: pwdTextField.frame.size.height, width: pwdTextField.frame.size.width, height: 1.0)
+        bottomLine2.backgroundColor = UIColor.white.cgColor
+        pwdTextField.borderStyle = UITextField.BorderStyle.none
+        pwdTextField.layer.addSublayer(bottomLine2)
+        pwdTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        pwdTextField.textColor = UIColor.white
+        
+        // EMAIL TEXT FIELD BORDER
+        let bottomLine3 = CALayer()
+        bottomLine3.frame = CGRect(x: 0.0, y: confirmPwdTextField.frame.size.height, width: confirmPwdTextField.frame.size.width, height: 1.0)
+        bottomLine3.backgroundColor = UIColor.white.cgColor
+        confirmPwdTextField.borderStyle = UITextField.BorderStyle.none
+        confirmPwdTextField.layer.addSublayer(bottomLine3)
+        confirmPwdTextField.attributedPlaceholder = NSAttributedString(string: "Confirm Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        confirmPwdTextField.textColor = UIColor.white
+        
+        signUpButton.layer.borderWidth = 0.5
+        signUpButton.layer.borderColor = UIColor.white.cgColor
+        
+        alrRegisteredButton.layer.borderWidth = 0.5
+        alrRegisteredButton.layer.borderColor = UIColor.white.cgColor
+        
+        
+        
+        
     }
     
     // MARK: - Actions

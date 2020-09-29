@@ -31,10 +31,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         print("CHECKING KEYS", key1, key2)
         
         
+        view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
+
+        
         
         // EMAIL TEXT FIELD BORDER
         let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: 0.0, y: emailTextField.frame.height - 1, width: emailTextField.frame.width, height: 1.0)
+        bottomLine.frame = CGRect(x: 0.0, y: emailTextField.frame.height - 1, width: emailTextField.frame.size.width, height: 1.0)
         bottomLine.backgroundColor = UIColor.white.cgColor
         emailTextField.borderStyle = UITextField.BorderStyle.none
         emailTextField.layer.addSublayer(bottomLine)
@@ -44,34 +47,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         
         // PWD TEXT FIELD BORDER
         let bottomLineP = CALayer()
-        bottomLineP.frame = CGRect(x: 0.0, y: pwdTextField.frame.height - 1, width: pwdTextField.frame.width, height: 1.0)
+        bottomLineP.frame = CGRect(x: 0.0, y: pwdTextField.frame.height - 1, width: pwdTextField.frame.size.width, height: 1.0)
         bottomLineP.backgroundColor = UIColor.white.cgColor
         pwdTextField.borderStyle = UITextField.BorderStyle.none
         pwdTextField.layer.addSublayer(bottomLineP)
         pwdTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
         pwdTextField.textColor = UIColor.white
 
+        signInButton.layer.borderWidth = 0.5
+        signInButton.layer.borderColor = UIColor.white.cgColor
         
-        // SIGN IN BUTTON
-        signInButton.layer.shadowColor = UIColor.black.cgColor
-        signInButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        signInButton.layer.shadowRadius = 5
-        signInButton.layer.shadowOpacity = 0.5
-        signInButton.layer.cornerRadius = 2
-
-        // SIGN IN BUTTON
-        forgotPasswordButton.layer.shadowColor = UIColor.black.cgColor
-        forgotPasswordButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        forgotPasswordButton.layer.shadowRadius = 5
-        forgotPasswordButton.layer.shadowOpacity = 0.5
-        forgotPasswordButton.layer.cornerRadius = 2
-
-        // REGISTER IN BUTTON
-        registerButton.layer.shadowColor = UIColor.black.cgColor
-        registerButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        registerButton.layer.shadowRadius = 5
-        registerButton.layer.shadowOpacity = 0.5
-        registerButton.layer.cornerRadius = 2
+        forgotPasswordButton.layer.borderWidth = 0.5
+        forgotPasswordButton.layer.borderColor = UIColor.white.cgColor
+        
+        registerButton.layer.borderWidth = 0.5
+        registerButton.layer.borderColor = UIColor.white.cgColor
+        
     }
     
     // MARK: Actions
@@ -83,14 +74,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         //check empty fields
         if(email.isEmpty || password.isEmpty){
             print("All fields are required.")
-//             displayAlertMessage(userMessage: "All fields are required.")
+             displayAlertMessage(userMessage: "All fields are required.")
             
             //COMMENT OUT
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "MainGallery")
-            controller.modalPresentationStyle = .fullScreen
-            self.present(controller, animated: true, completion: nil)
-            
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let controller = storyboard.instantiateViewController(withIdentifier: "MainGallery")
+//            controller.modalPresentationStyle = .fullScreen
+//            self.present(controller, animated: true, completion: nil)
+//
             
         }
         else{
@@ -148,7 +139,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
         
     }
     
-
+    @IBAction func forgotPwdButtonClicked(_ sender: Any) {
+        let alert = UIAlertController(title: "Coming Soon", message: "This functionality will be enabled later.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 

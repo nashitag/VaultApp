@@ -13,12 +13,14 @@ class UserProfileViewController: UIViewController {
     
     // MARK: Properties
     let firebaseAuth = Auth.auth()
-
+    @IBOutlet weak var usernameTextField: UILabel!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        usernameTextField.text = firebaseAuth.currentUser?.email
     }
     
 
