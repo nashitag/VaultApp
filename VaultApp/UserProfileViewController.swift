@@ -11,6 +11,12 @@ import Firebase
 
 class UserProfileViewController: UIViewController {
     
+    var ref: DatabaseReference!
+
+    var currentUser = Auth.auth().currentUser
+    
+    let encryptorDecryptor = EncryptorDecryptor(mode: "AlbumPhoto")
+    
     // MARK: Properties
     let firebaseAuth = Auth.auth()
     @IBOutlet weak var usernameTextField: UILabel!
@@ -24,6 +30,57 @@ class UserProfileViewController: UIViewController {
     }
     
 
+    // MARK: Actions
+    @IBAction func decoyPasswordSetUp(_ sender: Any) {
+        let alert = UIAlertController(title: "Decoy Password", message: "Enter decoy password.", preferredStyle: .alert)
+        alert.addTextField{ (textfield:UITextField) in
+            textfield.placeholder = "decoy password"
+            
+        }
+        
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [self] (action:UIAlertAction) in
+            //extract values
+            let decoyPwd =  alert.textFields![0]
+            
+            var email = currentUser!.email!
+            let toremove: Set<Character> = [".", "#", "$", "[", "]", "@"]
+            email.removeAll(where: { toremove.contains($0) })
+            
+            //check for empty fields
+            if(decoyPwd.text!.isEmpty){
+                self.displayAlertMessage(userMessage: "All fields are required.")
+                return
+            }
+            else{
+                // ENCRYPT PWD
+                let encryptedDecoyPwd = encryptorDecryptor.encryptString(string: decoyPwd.text!)
+                
+                // store decoy Pwd
+                self.ref = Database.database().reference()
+                let childUpdates = ["decoyPwd": encryptedDecoyPwd, "decoy": "yes"]
+                self.ref.child("users").child(email).updateChildValues(childUpdates)
+//                self.ref.child("users").child(email).setValue()
+//                self.ref.child("users").child(email).setValue([])
+//                self.ref.child("users").child(currentUser!.email!).observeSingleEvent(of: .value, with: { (snapshot) in
+//                  // Get user value
+//                  let value = snapshot.value as? NSDictionary
+//                  let decoyPwd = value?["decoyPwd"] as? String ?? ""
+//                    let decryptedDecoyPwd = self.encryptorDecryptor.decryptString(string: decoyPwd)
+//                    print("DECRYPTED PWD", decryptedDecoyPwd)
+//                  }) { (error) in
+//                    print(error.localizedDescription)
+//                }
+                
+            }
+        }))
+        self.present(alert, animated:true)
+        
+        
+        
+    }
+    
+    
     
     @IBAction func signOutButtonClicked(_ sender: Any) {
         do {
@@ -44,6 +101,18 @@ class UserProfileViewController: UIViewController {
         }
           
     }
+    
+    // DISPLAY ALERTS
+    func displayAlertMessage(userMessage: String){
+        let myAlert = UIAlertController(title: "Error", message: userMessage, preferredStyle: UIAlertController.Style.alert);
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil);
+        
+        myAlert.addAction(okAction);
+        
+        self.present(myAlert, animated:true, completion:nil);
+    }
+    
     /*
     // MARK: - Navigation
 

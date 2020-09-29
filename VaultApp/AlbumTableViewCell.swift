@@ -15,7 +15,7 @@ class AlbumTableViewCell: UITableViewCell {
     @IBOutlet weak var albumImage: UIImageView!
     @IBOutlet weak var albumDateLabel: UILabel!
     
-    var bckImages = [UIImage(named: "lck1"), UIImage(named: "lck2"), UIImage(named: "lck3")] //ADD MORE IMAGES
+    var bckImages = [UIImage(named: "lck1"), UIImage(named: "lck2"), UIImage(named: "lck3"), UIImage(named: "lck4"), UIImage(named: "lck5"), UIImage(named: "lck6"), UIImage(named: "lck7"), UIImage(named: "lck8"), UIImage(named: "lck9")] //ADD MORE IMAGES
 
 
     override func awakeFromNib() {

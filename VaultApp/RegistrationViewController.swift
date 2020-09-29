@@ -64,8 +64,6 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         alrRegisteredButton.layer.borderColor = UIColor.white.cgColor
         
         
-        
-        
     }
     
     // MARK: - Actions
@@ -103,7 +101,7 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
                 print("Email has been used, try a different one")
                 self.displayAlertMessage(title: "Error", userMessage: "User exists.Please use another email or sign in.")
             }else{
-                
+                self.createDatabaseRef(userEmail: userEmail)
                 Auth.auth().currentUser!.sendEmailVerification(completion: { (error) in})
                 
                 // Display Alert Message with Confirmation, similar alert, but we need to implement the handler
@@ -114,9 +112,20 @@ class RegistrationViewController: UIViewController, UITextFieldDelegate, UINavig
         }
     }
     
+    func createDatabaseRef(userEmail: String){
+        // store decoy Pwd
+        var email = userEmail
+        let toremove: Set<Character> = [".", "#", "$", "[", "]", "@"]
+        email.removeAll(where: { toremove.contains($0) })
+        let ref = Database.database().reference()
+        ref.child("users").child(email).setValue(["decoy": "no"])
+        
+    }
+    
     func goBackToLogIn (action : UIAlertAction) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+        controller.modalPresentationStyle = .fullScreen
         self.present(controller, animated: true, completion: nil)
     }
     

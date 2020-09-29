@@ -19,6 +19,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var registerButton: UIButton!
     
+    let encryptorDecryptor = EncryptorDecryptor(mode: "AlbumPhoto")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,16 +105,67 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UINavigationCo
                         controller.modalPresentationStyle = .fullScreen
                         self.present(controller, animated: true, completion: nil)
                     } else {
-                        // wrong email or password
+                        
                          print("wrong email or password")
+                        
+                        // CHECK IF USER IS ENTERING DECOY
                         self.displayAlertMessage(userMessage: "Log In Failed. Please enter your email or password correctly.")
+                        
                     }
                 }else{
-                    self.displayAlertMessage(userMessage: "Please sign up first.")
+                    let err = error as NSError?
+                    if(err?.userInfo["FIRAuthErrorUserInfoNameKey"] as! String=="ERROR_WRONG_PASSWORD"){
+                        self.checkIfUserWantsDecoy(userEmail: email, pwdEntered: password)
+                    }
+                    else{
+                        self.displayAlertMessage(userMessage: "Please sign up first.")
+                    }
                 }
                 
             }
         }
+    }
+    
+    func checkIfUserWantsDecoy(userEmail: String, pwdEntered: String) {
+        
+        // store decoy Pwd
+        let ref = Database.database().reference()
+        
+//        var decryptedDecoyPwd = ""
+        print(userEmail, pwdEntered)
+        
+        var email = userEmail
+        let toremove: Set<Character> = [".", "#", "$", "[", "]", "@"]
+        email.removeAll(where: { toremove.contains($0) })
+        
+        
+        ref.child("users").child(email).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            let value = snapshot.value as? NSDictionary
+            let ifDecoy = value?["decoy"] as? String ?? ""
+            if(ifDecoy=="yes"){
+                let decoyPwd = value?["decoyPwd"] as? String ?? ""
+                let decryptedDecoyPwd = self.encryptorDecryptor.decryptString(string: decoyPwd)
+                print("DECRYPTED PWD", decryptedDecoyPwd)
+                if(decryptedDecoyPwd==pwdEntered){
+                    print("true, going to decoy gallery")
+                    
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let controller = storyboard.instantiateViewController(withIdentifier: "DecoyGallery")
+                    controller.modalPresentationStyle = .fullScreen
+                    self.present(controller, animated: true, completion: nil)
+                }else{
+                    self.displayAlertMessage(userMessage: "Log In Failed. Please enter your email or password correctly.")
+                }
+            }else{
+                self.displayAlertMessage(userMessage: "Log In Failed. Please enter your email or password correctly.")
+            }
+          }) { (error) in
+            print(error.localizedDescription)
+        }
+        
+        
+        
     }
     
     func displayAlertMessage(userMessage: String){

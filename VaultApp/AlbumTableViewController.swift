@@ -31,30 +31,19 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
         // Load the sample data. or initial data
         updateAlbumsListServer()
         
+        // Refress table on pull down
         self.refreshControl?.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
-//        self.tableView.separatorInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
-        self.tableView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
-//        self.tableView.separatorStyle = .singleLine
         
+        // UI DESIGN ELEMENTS
         // NAVIGATION BAR UI
         let logo = UIImage(named: "banner1.jpg")
-        
         navigationController?.navigationBar.setBackgroundImage(logo, for: .default)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50.0)
         
-        
-//        tableView.layer.cornerRadius = 5
-//        tableView.layer.shadowColor = UIColor.black.cgColor
-//        tableView.layer.shadowRadius = 3
-//        tableView.layer.shadowOffset = CGSize(width: 20, height: 20)
     }
     
-    
-    
-    
-    
-    
+    // refresh tableDataList and tableView
     @objc func refresh(sender:AnyObject)
     {
         // Updating your data here...
@@ -79,20 +68,15 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "AlbumTableViewCell"
-        
         // guard let expression safely unwraps the optional.
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AlbumTableViewCell  else {
             fatalError("The dequeued cell is not an instance of AlbumTableViewCell.")
         }
         
-        
-//        cell.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
-        // Configure the cell...
-        // Fetches the appropriate meal for the data source layout.
+        // Configure the cell
         let album = albums[indexPath.row]
         cell.albumNameLabel.text = album.name
         cell.albumDateLabel.text = album.createdOn
-//        cell.imageView!.image = bckImages.randomElement() as? UIImage
         
         return cell
     }
@@ -100,44 +84,11 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
     
     
     // MARK: Actions
+    
+    // ADD ALBUM BUTTON
     @IBAction func addAlbumButtonClicked(_ sender: UIBarButtonItem) {
-//        selectCoverPhoto()
         askIfCreatAlbumWITHpin()
     }
-    
-//    func selectCoverPhoto(){
-//        let photo_camera_alert = UIAlertController(title: "Select Cover Photo for Album", message: nil, preferredStyle: .alert)
-//
-//        let photoAction = UIAlertAction(title: "Ok", style: .default){ [self] (_) in
-//            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary){
-//                let image = UIImagePickerController()
-//                image.delegate = self
-//                image.sourceType = .photoLibrary
-//                image.allowsEditing = true
-//                self.present(image, animated: true)
-//
-//            }
-//        }
-//        photo_camera_alert.addAction(photoAction)
-//        self.present(photo_camera_alert, animated: true, completion: nil)
-//
-//    }
-    
-//    var AlbumCoverPickedImage = UIImage(named: "defaultImage")
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//
-//        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
-//        {
-//            AlbumCoverPickedImage = image
-//
-//
-//        } else{
-//            print("ERROR: Image was not imported")
-//        }
-//        self.dismiss(animated: true, completion: nil)
-//        askIfCreatAlbumWITHpin()
-//    }
-    
     
     // Ask if album should be created with PIN CODE
     func askIfCreatAlbumWITHpin(){
@@ -154,11 +105,10 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
         })
         alert.addAction(actionYES)
         alert.addAction(actionNO)
-        
         self.present(alert, animated: true, completion: nil)
-        
     }
         
+    // Ask for Album name and Pin Code
     func showAlbumInputDialogWITHpin(title:String? = nil,
                          subtitle:String? = nil,
                          actionTitle:String? = "Add",
@@ -167,12 +117,8 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                          cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil) {
 
         
-        
-        //Create the alert controller.
         let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
-        
-        //Add the text field and configure. Ask for: 1. Album Name, 2. Password, 3. Photo
-        
+                
         // ALBUM NAME
         alert.addTextField { (albumNameTextField:UITextField) in
             albumNameTextField.placeholder = "Album Name"
@@ -186,9 +132,8 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                 albumPwdTextField.placeholder = "Enter 4 digit pin to access Album"
                 albumPwdTextField.keyboardType = UIKeyboardType.asciiCapableNumberPad
                 albumPwdTextField.accessibilityIdentifier = "albumPwdTextField"
-    //            textField2.maxLength = 4
             }
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            
             alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { (action:UIAlertAction) in
                 //extract values
                 let albumNameText =  alert.textFields![0]
@@ -201,13 +146,12 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                 }
                 else{
                     // create album with password
-                    createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!,  pin: albumPwdText.text!, withPin: true)
+                    self.createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!,  pin: albumPwdText.text!, withPin: true)
                     
                 }
-                
             }))
         }else{
-            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            
             alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { (action:UIAlertAction) in
                 //extract values
                 let albumNameText =  alert.textFields![0]
@@ -217,30 +161,32 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                     self.displayAlertMessage(userMessage: "Album name is required.")
                     return
                 }
-                
                 else{
-                    // create album with password
-                    createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!, withPin: false)
+                    // create album without password
+                    self.createAndStoreAlbumWithEncryptedPin(name: albumNameText.text!, withPin: false)
                 }
-                
             }))
         }
         
-        // ENCRYPT PIN, CREATE ALBUM AND STORE
-        func createAndStoreAlbumWithEncryptedPin(name: String,  pin: String = " ", withPin: Bool){
+        alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelHandler))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // ENCRYPT PIN, CREATE ALBUM AND STORE
+    func createAndStoreAlbumWithEncryptedPin(name: String,  pin: String = " ", withPin: Bool){
             
-            // WITH PIN
-            if(withPin){
-                print("creating album with password")
-                // encrypt pin
-                let encryptedPin = encryptorDecryptorPin.encryptString(string: pin)
-                
-                // create album
-                let albumCreated = Album(name: name,  password: encryptedPin)
-                
-                // store album
-                self.addAlbumToStorage(album: albumCreated!)
-            }
+        // WITH PIN
+        if(withPin){
+            print("creating album with password")
+            // encrypt pin
+            let encryptedPin = encryptorDecryptorPin.encryptString(string: pin)
+            
+            // create album
+            let albumCreated = Album(name: name,  password: encryptedPin)
+            
+            // store album
+            self.addAlbumToStorage(album: albumCreated!)
+        }
             // WITHOUT PIN
             else{
                 print("creating album without password")
@@ -252,27 +198,9 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
                 // store album
                 self.addAlbumToStorage(album: albumCreated!)
             }
-            
-//            // add album cover image
-//            let coverimagefileName = name+".jpg"
-//            guard let data: Data = AlbumCoverPickedImage!.jpegData(compressionQuality: 0.2) else {
-//                   return
-//               }
-//            let currentID = Auth.auth().currentUser?.uid
-//            let child_path = "/users/"+currentID!+"/albums/all_album_details/"+coverimagefileName
-//            let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
-//
-//            let metaData = StorageMetadata()
-//            metaData.contentType = "image/jpg"
-//
-//            storageRef.putData(data as Data, metadata: metaData)
-        }
-        
-        alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelHandler))
-
-        self.present(alert, animated: true, completion: nil)
     }
     
+    // DISPLAY ALERTS
     func displayAlertMessage(userMessage: String){
         let myAlert = UIAlertController(title: "Error", message: userMessage, preferredStyle: UIAlertController.Style.alert);
         
@@ -284,7 +212,7 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
     }
     
     
-    // BACKEND FUNCTIONS
+    // MARK: BACKEND FUNCTIONS
     func addAlbumToStorage(album: Album){
         
         // STORAGE REF CHECK
@@ -355,37 +283,41 @@ class AlbumTableViewController: UITableViewController, UITextFieldDelegate, UIIm
 
     
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            albums.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
-            let selectedAlbumTODELETE = albums[indexPath.row]
-            deleteAlbumPathFirebase(selectedAlbumTODELETE: selectedAlbumTODELETE)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            // Delete the row from the data source
+//            albums.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//
+//            let selectedAlbumTODELETE = albums[indexPath.row]
+////            deleteAlbumPathFirebase(selectedAlbumTODELETE: selectedAlbumTODELETE)
+//        } else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }
+//    }
     
-    func deleteAlbumPathFirebase(selectedAlbumTODELETE: Album){
-//        let child_path = "/users/"+currentID!+"/albums/"+selectedAlbumTODELETE.name
-        
-        let child_path = "/users/"+currentID!+"/albums/all_album_details/"+selectedAlbumTODELETE.name
-        let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
-        
-        storageRef.delete { error in
-          if let error = error {
-            // Uh-oh, an error occurred!
-            print("album deletion error", error)
-          } else {
-            // File deleted successfully
-            print("album deleted")
-          }
-        }
-
-        
-    }
+    
+    // CHECK FUNCTION TO DELETE
+//    func deleteAlbumPathFirebase(selectedAlbumTODELETE: Album){
+////        let child_path = "/users/"+currentID!+"/albums/"+selectedAlbumTODELETE.name
+//
+//        let child_path = "/users/"+currentID!+"/albums/all_album_details/"+selectedAlbumTODELETE.name
+//        let storageRef = Storage.storage(url: "gs://vaultapp-5c3c8.appspot.com").reference().child(child_path)
+//
+//        storageRef.delete { error in
+//          if let error = error {
+//            // Uh-oh, an error occurred!
+//            print("album deletion error", error)
+//          } else {
+//            // File deleted successfully
+//            print("album deleted")
+//          }
+//        }
+//        albums.removeAll()
+//        updateAlbumsListServer()
+//
+//
+//    }
     
     
 
